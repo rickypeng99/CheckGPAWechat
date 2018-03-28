@@ -48,3 +48,13 @@ class Handle(object):
                 return "success"
         except Exception, Argment:
             return Argment
+
+    def checkOverlap(str):
+        a = list(str)
+        n = len(a)
+        for i in range(n):
+            if str.count(a[i]) != 1:
+                return False
+        return True
+
+    
