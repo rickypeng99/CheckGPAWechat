@@ -38,58 +38,43 @@ class Handle(object):
             print "Handle Post webdata is ", webData
             #后台打日志
             recMsg = receive.parse_xml(webData)
-
-            if isinstance(recMsg, receive.Msg):
+            
+            if isinstance(recMsg, receive.Msg) and recMsg.MsgType == 'text':
                 toUser = recMsg.FromUserName
                 fromUser = recMsg.ToUserName
-                #Receiving text messages
-                if recMsg.MsgType == 'text':
-
-                    content = ""
-                    #代表可以使用
-                    if " " in recMsg.Content :
-                        db = data.Data()
-                        str1 = recMsg.Content
-                        index = str1.find(' ')
-                        subject = str1[0: index]
-                        num = str1[index + 1: len(str1)]
-                        count = 0
-                        foundClass = list()
-                        for course in db.dataBase:
-                            if course['Subject'].lower() == subject.lower() and course['Course'] == num :
-                                count += 1
-                                foundClass.append(course)
-                                if count <= 0:
-                                    content ="Ricky找不到 " + recMsg.Content+ " 请重新输入！"
-                                else:
-                                    avgGpa = 0.0
-                                    student = 0
-                                    for c1 in foundClass:
-                                        student += calculateStudentNum(c1)
-                                        avgGpa += (float(c1['Average Grade'])*calculateStudentNum(c1))
-                                        avgGpa /= student
-                                        content +="Average GPA of the course: "+ str(avgGpa) +"\n"
-                                        content +="Found "+ str(count)+ " sections!"+ "\n"
-                                        for c in foundClass:
-                                            content += c['Subject']+ c['Course']+" "+ c['Average Grade']+ "\n"
-                                            content += "Instructor: "+ c['Primary Instructor'] +"\n"
-
-                #Receiving photo messages
-
+                content = ""
+                #代表可以使用
+                if " " in recMsg.Content :
+                    db = data.Data()
+                    str1 = recMsg.Content
+                    index = str1.find(' ')
+                    subject = str1[0: index]
+                    num = str1[index + 1: len(str1)]
+                    count = 0
+                    foundClass = list()
+                    for course in db.dataBase:
+                        if course['Subject'].lower() == subject.lower() and course['Course'] == num :
+                            count += 1
+                            foundClass.append(course)
+                    if count <= 0:
+                        content ="Ricky找不到 " + recMsg.Content+ " 请重新输入！"
                     else:
-                        content = "Ricky无法识别课程ID, 请重新输入！"
-                    replyMsg = reply.TextMsg(toUser, fromUser, content)
-                    return replyMsg.send()
+                        avgGpa = 0.0
+                        student = 0
+                        for c1 in foundClass:
+                            student += calculateStudentNum(c1)
+                            avgGpa += (float(c1['Average Grade'])*calculateStudentNum(c1))
+                        avgGpa /= student
+                        content +="Average GPA of the course: "+ str(avgGpa) +"\n"
+                        content +="Found "+ str(count)+ " sections!"+ "\n"
+                        for c in foundClass:
+                            content += c['Subject']+ c['Course']+" "+ c['Average Grade']+ "\n"
+                            content += "Instructor: "+ c['Primary Instructor'] +"\n"
 
-                if recMsg.MsgType == 'image':
-                    mediaId = recMsg.MediaId
-                    replyMsg = reply.ImageMsg(toUser, fromUser, mediaId)
-                    return replyMsg.send()
                 else:
-                    return reply.Msg().send()
-
-
-            #photo messages
+                    content = "Ricky无法识别课程ID, 请重新输入！"
+                replyMsg = reply.TextMsg(toUser, fromUser, content)
+                return replyMsg.send()
             else:
                 print "暂且不处理"
                 return "success"
