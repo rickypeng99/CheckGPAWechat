@@ -8,9 +8,10 @@ import json
 class Data():
     dataBase = list()
     def __init__(self):
-        with open('data/gpa.json') as json_file:
-            data = json.load(json_file)
-            for p in data['Courses']:
-                Data.dataBase.append(p)
+        if len(self.dataBase) == 0:
+            with open('data/gpa.json') as json_file:
+                data = json.load(json_file)
+                for p in data['Courses']:
+                    Data.dataBase.append(p)
     def printData():
         print dataBase[100]['Subject']

@@ -5,6 +5,7 @@ import hashlib
 import web
 import receive
 import reply
+import data
 
 class Handle(object):
    def GET(self):
@@ -40,7 +41,28 @@ class Handle(object):
             if isinstance(recMsg, receive.Msg) and recMsg.MsgType == 'text':
                 toUser = recMsg.FromUserName
                 fromUser = recMsg.ToUserName
-                content = recMsg.Content
+                content = ""
+                #代表可以使用
+                if checkOverlap(recMsg.Content):
+                    db = data.Data()
+                    str1 = recMsg.Content
+                    index = str1.find(' ')
+                    subject = str1[0: index]
+                    num = str1[index + 1: len(str1)]
+                    count = 0
+                    foundClass = list()
+                    for course in db.dataBase:
+                        if course['Subject'].lower() == subject.lower() and course['Course'] == num :
+                            count += 1
+                            foundClass.append(course)
+                    if count <= 0:
+                        content ="Ricky找不到 " + recMsg.Content+ " 请重新输入！"
+                    else:
+                        content +="Found "+ str(count)+ " sections!"+ "\n"
+                        for c in foundClass:
+                             content += c['Subject']+ c['Course']+" "+ c['Average Grade']+ "\n"
+                else:
+                    content = "Ricky无法识别课程ID, 请重新输入！"
                 replyMsg = reply.TextMsg(toUser, fromUser, content)
                 return replyMsg.send()
             else:
@@ -48,13 +70,10 @@ class Handle(object):
                 return "success"
         except Exception, Argment:
             return Argment
-
-    def checkOverlap(str):
+def checkOverlap(str):
         a = list(str)
         n = len(a)
         for i in range(n):
             if str.count(a[i]) != 1:
                 return False
         return True
-
-    
