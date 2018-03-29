@@ -62,7 +62,7 @@ class Handle(object):
                         for c1 in foundClass:
                             avgGpa += float(c1['Average Grade'])
                         avgGpa /= len(foundClass)
-                        content +="Average GPA of the course: "+ avgGpa
+                        content +="Average GPA of the course: "+ srt(avgGpa) +"\n"
                         content +="Found "+ str(count)+ " sections!"+ "\n"
                         for c in foundClass:
                             content += c['Subject']+ c['Course']+" "+ c['Average Grade']+ "\n"

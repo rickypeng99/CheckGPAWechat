@@ -88,6 +88,8 @@ import data
 # print content
 
 db = data.Data()
-avg = float(db.dataBase[0]['Average Grade'])
-avg /= 2
+avg = 0.0
+s = [2,3,4]
+avg += float(db.dataBase[0]['Average Grade'])
+avg /= len(s)
 print avg
