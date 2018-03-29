@@ -89,7 +89,7 @@ def checkOverlap(str):
 
 def calculateStudentNum(course):
     sum = 0;
-    sum += float(course['A+'])
+    sum += int(course['A+'])
     sum += int(course['A'])
     sum += int(course['A-'])
     sum += int(course['B+'])
