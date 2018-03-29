@@ -58,9 +58,16 @@ class Handle(object):
                     if count <= 0:
                         content ="Ricky找不到 " + recMsg.Content+ " 请重新输入！"
                     else:
+                        avgGpa = 0.0
+                        for c1 in foundClass:
+                            avgGpa += float(c1['Average Grade'])
+                        avgGpa /= len(foundClass)
+                        content +="Average GPA of the course: "+ avgGpa
                         content +="Found "+ str(count)+ " sections!"+ "\n"
                         for c in foundClass:
-                             content += c['Subject']+ c['Course']+" "+ c['Average Grade']+ "\n"
+                            content += c['Subject']+ c['Course']+" "+ c['Average Grade']+ "\n"
+                            content += "Instructor: "+ c['Primary Instructor'] +"\n"
+
                 else:
                     content = "Ricky无法识别课程ID, 请重新输入！"
                 replyMsg = reply.TextMsg(toUser, fromUser, content)
