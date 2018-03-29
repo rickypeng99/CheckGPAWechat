@@ -93,3 +93,6 @@ s = [2,3,4]
 avg += float(db.dataBase[0]['Average Grade'])
 avg /= len(s)
 print avg
+a = 0
+a = int(db.dataBase[0]['A+'])
+print a

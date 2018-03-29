@@ -59,9 +59,12 @@ class Handle(object):
                         content ="Ricky找不到 " + recMsg.Content+ " 请重新输入！"
                     else:
                         avgGpa = 0.0
+                        student = 0
                         for c1 in foundClass:
-                            avgGpa += float(c1['Average Grade'])
+                            student += calculateStudentNum(c1)
+                            avgGpa += (float(c1['Average Grade'])*calculateStudentNum(c1))
                         avgGpa /= len(foundClass)
+                        avgGpa /= student
                         content +="Average GPA of the course: "+ str(avgGpa) +"\n"
                         content +="Found "+ str(count)+ " sections!"+ "\n"
                         for c in foundClass:
@@ -84,3 +87,20 @@ def checkOverlap(str):
             if str.count(a[i]) != 1:
                 return False
         return True
+
+def calculateStudentNum(course):
+    sum = 0;
+    sum += float(course['A+'])
+    sum += int(course['A'])
+    sum += int(course['A-'])
+    sum += int(course['B+'])
+    sum += int(course['B'])
+    sum += int(course['B-'])
+    sum += int(course['C+'])
+    sum += int(course['C'])
+    sum += int(course['C-'])
+    sum += int(course['D+'])
+    sum += int(course['D'])
+    sum += int(course['D-'])
+    sum += int(course['F'])
+    return sum
