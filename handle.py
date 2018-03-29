@@ -43,7 +43,7 @@ class Handle(object):
                 fromUser = recMsg.ToUserName
                 content = ""
                 #代表可以使用
-                if checkOverlap(recMsg.Content):
+                if " " in recMsg.Content :
                     db = data.Data()
                     str1 = recMsg.Content
                     index = str1.find(' ')
