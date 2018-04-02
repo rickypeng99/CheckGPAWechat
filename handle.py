@@ -72,7 +72,7 @@ class Handle(object):
                             content += "Instructor: "+ c['Primary Instructor'] +"\n"
 
                 else:
-                    content = "Ricky无法识别课程ID, 请重新输入！"
+                    content = "Ricky无法识别课程ID, 请重新输入！（记得在科目与课号之间加上空格，以便后台检测确认）"
                 replyMsg = reply.TextMsg(toUser, fromUser, content)
                 return replyMsg.send()
             else:
