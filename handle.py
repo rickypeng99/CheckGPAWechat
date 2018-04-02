@@ -36,10 +36,10 @@ class Handle(object):
         try:
             webData = web.data()
             print "Handle Post webdata is ", webData
-            #后台打日志
+   #后台打日志
             recMsg = receive.parse_xml(webData)
-            
             if isinstance(recMsg, receive.Msg) and recMsg.MsgType == 'text':
+
                 toUser = recMsg.FromUserName
                 fromUser = recMsg.ToUserName
                 content = ""
